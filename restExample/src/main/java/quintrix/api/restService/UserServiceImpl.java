@@ -3,6 +3,7 @@ package quintrix.api.restService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,8 @@ public class UserServiceImpl implements UserService {
   @Autowired
   RestTemplate restTemplate;
 
-  private String uri = "https://gorest.co.in/public/v2/users";
+  @Value("${agentService.getUrl}")
+  String userServiceGetUrl;
 
 
   @Override
@@ -30,8 +32,8 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<User> fetchAllUser() {
     List<User> user = null;
-    ResponseEntity<List<User>> response = restTemplate.exchange(uri, HttpMethod.GET, null,
-        new ParameterizedTypeReference<List<User>>() {});
+    ResponseEntity<List<User>> response = restTemplate.exchange(userServiceGetUrl, HttpMethod.GET,
+        null, new ParameterizedTypeReference<List<User>>() {});
 
     if (response.getStatusCode() == HttpStatus.OK) {
       user = response.getBody();
