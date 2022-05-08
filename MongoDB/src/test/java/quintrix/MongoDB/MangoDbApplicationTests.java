@@ -1,13 +1,12 @@
-package quintrix.MangoDB;
+package quintrix.MongoDB;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MangoDbApplicationTests {
+class MongoDbApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+  @Test
+  void contextLoads() {}
 
 }

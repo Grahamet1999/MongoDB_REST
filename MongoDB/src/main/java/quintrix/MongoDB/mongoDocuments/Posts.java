@@ -16,6 +16,13 @@ public class Posts {
 
   private String body;
 
+  public Posts(long user_id, String title, String body) {
+    super();
+    this.user_id = user_id;
+    this.title = title;
+    this.body = body;
+  }
+
   public long getId() {
     return id;
   }

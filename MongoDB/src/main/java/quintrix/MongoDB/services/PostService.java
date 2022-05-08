@@ -1,6 +1,7 @@
 package quintrix.MongoDB.services;
 
 import java.util.List;
+import java.util.Optional;
 import quintrix.MongoDB.mongoDocuments.Posts;
 
 public interface PostService {
@@ -9,9 +10,9 @@ public interface PostService {
 
   Posts addPost(Posts post);
 
-  Posts getPostById(long id);
+  Optional<Posts> getPostById(String id);
 
   List<Posts> getPostByUserId(long id);
 
-  void deletePosts(long id);
+  void deletePosts(String id);
 }
