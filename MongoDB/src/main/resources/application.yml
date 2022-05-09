@@ -1,0 +1,10 @@
+server:
+  port: 8081
+
+userService:
+  getUrl: http://localhost:8080/users
+  
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

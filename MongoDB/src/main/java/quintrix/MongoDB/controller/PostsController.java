@@ -28,8 +28,8 @@ public class PostsController {
     return postService.getPostById(id);
   }
 
-  @RequestMapping(method = RequestMethod.GET, value = "/posts")
-  List<Posts> getPostByUserId(@RequestParam(name = "user_Id", required = false) long id) {
+  @RequestMapping(method = RequestMethod.GET, value = "/posts/")
+  List<Posts> getPostByUserId(@RequestParam(name = "user_Id", required = false) Long id) {
     return postService.getPostByUserId(id);
   }
 

@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import quintrix.MongoDB.mongoDocuments.Posts;
 import quintrix.MongoDB.repository.PostsRepository;
 
+@Service
 public class PostServiceImpl implements PostService {
 
   @Autowired
@@ -23,7 +25,7 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public List<Posts> getAllPosts() {
-    List<Posts> postList = postRepository.findAll();
+    List<Posts> postList = mongoTemplate.findAll(Posts.class);
     return postList;
   }
 
@@ -40,7 +42,7 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public List<Posts> getPostByUserId(long id) {
+  public List<Posts> getPostByUserId(Long id) {
 
     Query query = new Query();
     query.addCriteria(Criteria.where("user_id").is(id));
@@ -49,7 +51,7 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public void deletePosts(String id) {
-    postRepository.deleteById(id);
+    postRepository.deleteById(id.toString());
   }
 
 }

@@ -12,7 +12,8 @@ public interface PostService {
 
   Optional<Posts> getPostById(String id);
 
-  List<Posts> getPostByUserId(long id);
+  List<Posts> getPostByUserId(Long id);
 
   void deletePosts(String id);
+
 }
