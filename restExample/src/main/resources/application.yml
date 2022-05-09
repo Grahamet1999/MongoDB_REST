@@ -11,4 +11,5 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
 
 userService:
-    getUrl: https://gorest.co.in/public/v2/users
+    getUrl: https://gorest.co.in/public/v2/users/
+    getToken: Bearer 4418597a3a0ab6b50a074d60bfc9afa9ea2a8257eed90b4218c60de31d05786f

@@ -1,16 +1,16 @@
 package quintrix.api.restService;
 
-import java.util.List;
+import org.springframework.web.client.RestTemplate;
 import quintrix.api.entity.User;
 
 public interface UserService {
 
-  List<User> saveUser(User user);
+  Object saveUser(User user, RestTemplate restTemplate);
 
-  List<User> fetchAllUser();
+  Object fetchAllUser(RestTemplate restTemplate);
 
-  User fetchUserById(int id);
+  User fetchUserById(int id, RestTemplate restTemplate);
 
-  void deleteUserById(int id);
+  void deleteUserById(int id, RestTemplate restTemplate);
 
 }

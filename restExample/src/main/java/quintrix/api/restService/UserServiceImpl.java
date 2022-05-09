@@ -1,10 +1,12 @@
 package quintrix.api.restService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,42 +20,52 @@ public class UserServiceImpl implements UserService {
   @Autowired
   RestTemplate restTemplate;
 
-  @Value("${agentService.getUrl}")
+  @Value("${userService.getUrl}")
   String userServiceGetUrl;
 
+  @Value("${userService.getToken}")
+  String userServiceGetToken;
 
   @Override
-  public List<User> saveUser(User user) {
-    List<User> userList = fetchAllUser();
-    userList.add(0, user);
-    return userList;
+  public Object saveUser(User user, RestTemplate restTemplate) {
+
+    HttpHeaders header = new HttpHeaders();
+    HttpEntity<User> request = new HttpEntity<User>(user, header);
+    header.set("Authorization", userServiceGetToken);
+
+    return restTemplate.exchange(userServiceGetUrl, HttpMethod.POST, request, User.class).getBody();
   }
 
   @Override
-  public List<User> fetchAllUser() {
-    List<User> user = null;
-    ResponseEntity<List<User>> response = restTemplate.exchange(userServiceGetUrl, HttpMethod.GET,
-        null, new ParameterizedTypeReference<List<User>>() {});
+  public Object fetchAllUser(RestTemplate restTemplate) {
 
-    if (response.getStatusCode() == HttpStatus.OK) {
-      user = response.getBody();
-    }
-    return user;
+    ArrayList<User> allUsers = new ArrayList<User>();
+
+    ResponseEntity<User[]> response = restTemplate.getForEntity(userServiceGetUrl, User[].class);
+
+    allUsers.addAll(Arrays.asList(Objects.requireNonNull(response.getBody())));
+
+    return new ResponseEntity<>(allUsers, HttpStatus.OK);
   }
 
   @Override
-  public User fetchUserById(int id) {
-    List<User> userList = fetchAllUser();
+  public User fetchUserById(int id, RestTemplate restTemplate) {
 
-    Optional<User> user = userList.stream().filter(u -> u.getId().equals(id)).findAny();
-    return user.get();
+    String url = userServiceGetUrl + id;
+    url += "?access-token=" + userServiceGetToken;
+    return restTemplate.getForObject(url, User.class);
+
   }
 
   @Override
-  public void deleteUserById(int id) {
+  public void deleteUserById(int id, RestTemplate restTemplate) {
 
-    List<User> userList = fetchAllUser();
-    userList.removeIf(u -> u.getId().equals(id));
+    HttpHeaders header = new HttpHeaders();
+    HttpEntity<User> request = new HttpEntity<User>(header);
+    header.set("Authorization", userServiceGetToken);
+    String url = userServiceGetUrl + id;
+    restTemplate.exchange(url, HttpMethod.DELETE, request, String.class).getBody();
+
   }
 
 }
